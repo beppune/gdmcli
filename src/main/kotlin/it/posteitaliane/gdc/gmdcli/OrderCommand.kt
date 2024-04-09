@@ -2,6 +2,8 @@ package it.posteitaliane.gdc.gmdcli
 
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.subcommands
+import org.json.JSONObject
+import java.net.ConnectException
 
 
 class ListOrders : CliktCommand(
@@ -9,8 +11,18 @@ class ListOrders : CliktCommand(
     help = "list registered orders"
 ) {
     override fun run() {
-        khttp.get("${config().root}/orders")
-            .text.also(::println)
+
+        try {
+
+            khttp.get("${config().root}/orders")
+                .jsonArray.forEach { it ->
+                    val o = it as JSONObject
+
+                    println("""${o["number"]}:${o.getJSONObject("op")["username"]}:${o["type"]}:${o["subject"]}""")
+                }
+        }catch (ex:ConnectException) {
+            println(ex.message)
+        }
     }
 
 }
