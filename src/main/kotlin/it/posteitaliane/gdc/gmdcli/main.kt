@@ -7,7 +7,10 @@ import java.nio.file.Files
 import java.util.Properties
 import kotlin.io.path.Path
 
-fun CliktCommand.config() : Config = (currentContext.findRoot().command as RootCommand).config
+fun CliktCommand.config()  = (currentContext.findRoot().command as RootCommand).config
+fun CliktCommand.mapper()  = (currentContext.findRoot().command as RootCommand).objectMapper
+fun CliktCommand.reader()  = (currentContext.findRoot().command as RootCommand).textFileReader
+
 
 fun main(args:Array<String>) {
 
